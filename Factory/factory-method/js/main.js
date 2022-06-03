@@ -1,40 +1,51 @@
-class FreezerFactory {
+class Device {
   constructor(props) {
     this.oneClick = props.oneClick;
-    this.quantity = props.quantity;
     this.version = props.version;
     this.code = props.code;
   }
 }
 
-class DoorFactory {
+class Freezer extends Device {
   constructor(props) {
+    super(props);
+    this.quantity = props.quantity;
+  }
+}
+
+class Door extends Device {
+  constructor(props) {
+    super(props);
     this.button = props.button;
     this.kin = props.kin;
     this.smartLed = props.smartLed;
-    this.oneClick = props.oneClick;
-    this.version = props.version;
-    this.code = props.code;
   }
 }
 
 class DeviceFactory {
-  constructor(type, props) {
-    switch (type) {
-      case 'freezer':
-        return new FreezerFactory(props);
-      case 'door':
-        return new DoorFactory(props);
-    }
+  static createDevice() {
+    throw new Error('Abstract method');
+  }
+}
+
+class FreezerFactory extends DeviceFactory {
+  static createDevice(props) {
+    return new Freezer(props);
+  }
+}
+
+class DoorFactory extends DeviceFactory {
+  static createDevice(props) {
+    return new Door(props);
   }
 }
 
 
-let device = new DeviceFactory('freezer', {
+let device = FreezerFactory.createDevice({
   oneClick: true,
   quantity: 1,
   version: '1.0',
   code: '12345'
 })
 
-console.log(device)
+console.log(device);
